@@ -1,0 +1,128 @@
+@media print {
+    #projetos_table tbody {
+        margin-left: 30px;
+        margin-right: 30px;
+    }
+}
+
+.main-sidebar {
+    position: fixed;
+    height: 100%; /* You can adjust the height accordingly */
+    top: 0;
+    left: 0;
+}
+
+.arial12-font {
+    font-family: 'Arial', sans-serif;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+
+.arial12-font-normal {
+    font-family: 'Arial', sans-serif;
+    font-size: 12px;
+   
+}
+
+.arial10-font {
+    font-family: 'Arial', sans-serif;
+    font-size: 10px;
+    font-weight: bold;
+}
+
+.arial8-font {
+    font-family: 'Arial', sans-serif;
+    font-size: 8px;
+}
+
+.arial14-font {
+    font-family: 'Arial', sans-serif;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+
+.arial14-font-normal {
+    font-family: 'Arial', sans-serif;
+    font-size: 14px;
+}
+
+.arial16-font-normal {
+    font-family: 'Arial', sans-serif;
+    font-size: 16px;
+    
+}
+
+.arial16-font {
+    font-family: 'Arial', sans-serif;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.arial18-font-normal {
+    font-family: 'Arial', sans-serif;
+    font-size: 18px;
+    
+}
+
+.arial18-font {
+    font-family: 'Arial', sans-serif;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+input {
+    font-family: Arial, sans-serif;
+    font-size: 8px;
+}
+
+.text-bold {
+    font-weight: bold;
+}
+
+.titulo {
+
+    font-family: 'Arial', sans-serif;
+    font-size: 12px;
+    font-weight: bold;
+    color:rgb(46, 46, 143);
+}
+
+.sub-titulo {
+
+    font-family: 'Arial', sans-serif;
+    font-size: 12px;
+    font-weight: bold;
+    text-decoration: underline;
+    color:black;
+}
+
+.corpo {
+
+    font-family: 'Arial', sans-serif;
+    font-size: 12px;
+}
+
+.bordered-row {
+    border: 1px solid #D3D3D3;
+    padding: 10px; 
+}
+
+.bordered-left{
+    border-left: 1px solid #D3D3D3;  /* Borda esquerda cinza clara */
+    padding: 10px; /* Ajuste o valor do padding conforme necessário */
+    box-sizing: border-box;
+}
+
+.bg-light {
+    background-color: #f8f9fa; /* Cor clara */
+}
+
+.bg-white {
+    background-color: #ffffff; /* Cor branca */
+}
+
+.bg-light2222 {
+    background-color: rgb(11, 7, 7)/* Cor de fundo cinza mais claro */
+}
