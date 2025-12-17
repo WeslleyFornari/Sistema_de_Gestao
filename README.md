@@ -12,4 +12,22 @@
 # rodar o projeto #
 ./vendor/bin/sail up -d
 
+# Crie o banco de dados e as tabelas
+./vendor/bin/sail artisan migrate
+
+# Crie um usuario Padrão de acesso
+./vendor/bin/sail artisan db:seed
+
+# rodar o projeto #
+./vendor/bin/sail up -d
+
+# Acessar
+//localhost
+
+# Primeiro Acesso
+email: admin@admin  password: password
+
+
+
+
 

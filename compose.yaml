@@ -1,5 +1,7 @@
 services:
     laravel.test:
+        # A build context está apontando para o Laravel 8.3, mas o nome da imagem é 'sail-8.4/app'.
+        # Isso não é um erro funcional, mas pode ser inconsistente. Vamos manter como está, pois o build deve ser 8.3.
         build:
             context: ./vendor/laravel/sail/runtimes/8.3
             dockerfile: Dockerfile
@@ -18,7 +20,14 @@ services:
             XDEBUG_CONFIG: '${SAIL_XDEBUG_CONFIG:-client_host=host.docker.internal}'
             IGNITION_LOCAL_SITES_PATH: '${PWD}'
         volumes:
+            # 1. Mapeamento principal para o código do projeto
             - '.:/var/www/html'
+            
+            # 2. SOLUÇÃO PARA O ERRO DE PERMISSÃO (CHMOD):
+            # Força o Docker a usar volumes internos para as pastas que precisam de escrita.
+            - laravel-storage:/var/www/html/storage
+            - laravel-cache:/var/www/html/bootstrap/cache
+            
         networks:
             - sail
         depends_on:
@@ -48,9 +57,17 @@ services:
                 - '-p${DB_PASSWORD}'
             retries: 3
             timeout: 5s
+            
+# --- SEÇÃO DE DEFINIÇÕES ---
 networks:
     sail:
         driver: bridge
+
+# ADIÇÃO CRUCIAL: Definir os volumes criados para o Storage e Cache
 volumes:
     sail-mysql:
+        driver: local
+    laravel-storage: # Volume para a pasta storage (Solução do CHMOD)
+        driver: local
+    laravel-cache:   # Volume para a pasta bootstrap/cache (Solução do CHMOD)
         driver: local

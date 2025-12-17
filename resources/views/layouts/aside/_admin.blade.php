@@ -8,7 +8,7 @@
 </li>
 
 <li class="nav-item">
-  <a class="nav-link  {{ request()->routeIs('app.categorias.*') ? 'active' : '' }}" href="{{route('app.categorias.index')}}">
+  <a class="nav-link  {{ request()->routeIs('app.grupo_economico.*') ? 'active' : '' }}" href="{{route('app.grupo_economico.index')}}">
     <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
       <svg width="12px" height="12px" viewBox="0 0 43 36" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
         <title>credit-card</title>
@@ -24,12 +24,12 @@
         </g>
       </svg>
     </div>
-    <span class="nav-link-text ms-1">Categorias</span>
+    <span class="nav-link-text ms-1">Grupo Econômico</span>
   </a>
 </li>
 
 <li class="nav-item">
-  <a class="nav-link  {{ request()->routeIs('app.grupos.*') ? 'active' : '' }}" href="{{route('app.grupos.index')}}">
+  <a class="nav-link  {{ request()->routeIs('app.bandeiras.*') ? 'active' : '' }}" href="{{route('app.bandeiras.index')}}">
     <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
       <svg width="12px" height="12px" viewBox="0 0 42 42" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
         <title>box-3d-50</title>
@@ -46,80 +46,30 @@
         </g>
       </svg>
     </div>
-    <span class="nav-link-text ms-1">Grupos</span>
+    <span class="nav-link-text ms-1">Bandeiras</span>
   </a>
 </li>
 
 <li class="nav-item">
-  <a class="nav-link  {{ request()->routeIs('app.produtos.*') ? 'active' : '' }}" href="{{route('app.produtos.index')}}">
+  <a class="nav-link  {{ request()->routeIs('app.unidades.*') ? 'active' : '' }}" href="{{route('app.unidades.index')}}">
     <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
     <i class="fa-solid fa-box"></i>
     </div>
-    <span class="nav-link-text ms-1">Produtos</span>
+    <span class="nav-link-text ms-1">Unidades</span>
   </a>
 </li>
 
 <li class="nav-item">
-  <a class="nav-link  {{ request()->routeIs('app.usuarios.*') ? 'active' : '' }}" href="{{route('app.usuarios.index')}}">
+  <a class="nav-link  {{ request()->routeIs('app.colaboradores.*') ? 'active' : '' }}" href="{{route('app.colaboradores.index')}}">
     <div class="icon icon-shop icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
        <i class="fa-solid fa-user"></i>
     </div>
-    <span class="nav-link-text ms-1">Usuários</span>
-  </a>
-</li>
-
-<li class="nav-item">
-  <a class="nav-link  {{ request()->routeIs('app.pagamentos.*') ? 'active' : '' }}" href="{{route('app.pagamentos.index')}}">
-    <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
-    <i class="fa-solid fa-file-invoice-dollar"></i>
-    </div>
-    <span class="nav-link-text ms-1">Pagamentos</span>
+    <span class="nav-link-text ms-1">Colaboradores</span>
   </a>
 </li>
 
 <br>
 
-<li class="nav-item">
-  <a class="nav-link  {{ request()->routeIs('app.fluxo-caixa.lancamentos.*') ? 'active' : '' }}" href="{{route('app.fluxo-caixa.lancamentos.index')}}">
-    <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
-    <i class="fa-solid fa-clipboard"></i>
-    </div>
-    <span class="nav-link-text ms-1">Extratos</span>
-  </a>
-</li>
 
-<li class="nav-item">
-  <a class="nav-link  {{ request()->routeIs('app.fluxo-caixa.contas-pagar.*') ? 'active' : '' }}" href="{{route('app.fluxo-caixa.contas-pagar.index')}}">
-    <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
-    <i class="fa-solid fa-arrow-up-from-bracket"></i>
-    </div>
-    <span class="nav-link-text ms-1">Contas a pagar</span>
-  </a>
-</li>
 
-<li class="nav-item">
-  <a class="nav-link  {{ request()->routeIs('app.fluxo-caixa.contas-receber.*') ? 'active' : '' }}" href="{{route('app.fluxo-caixa.contas-receber.index')}}">
-    <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
-    <i class="fa-solid fa-keyboard"></i>
-    </div>
-    <span class="nav-link-text ms-1">Contas a receber</span>
-  </a>
-</li>
 
-<li class="nav-item">
-  <a class="nav-link  {{ request()->routeIs('app.fluxo-caixa.categorias.*') ? 'active' : '' }}" href="{{route('app.fluxo-caixa.categorias.index')}}">
-    <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
-         <i class="fa-solid fa-layer-group"></i>
-    </div>
-    <span class="nav-link-text ms-1">Categorias da Conta</span>
-  </a>
-</li>
-
-<li class="nav-item">
-  <a class="nav-link  {{ request()->routeIs('app.fluxo-caixa.contas.*') ? 'active' : '' }}" href="{{route('app.fluxo-caixa.contas.index')}}">
-    <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
-    <i class="fa-solid fa-file-invoice"></i>
-    </div>
-    <span class="nav-link-text ms-1">Contas</span>
-  </a>
-</li>

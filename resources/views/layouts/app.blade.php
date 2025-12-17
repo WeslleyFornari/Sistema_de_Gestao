@@ -5,6 +5,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <!-- TOKEN -->
+  
   <meta name="csrf-token" content="{{ csrf_token() }}">
   <title>
     @yield('title')
@@ -111,11 +112,11 @@
           <div class="col-8 col-sm-4 col-md-5 col-lg-5 col-xl-5 pt-4">
 
             <h5 class="font-weight-bolder mb-0">@yield('title')</h5>
-            <a href="{{Route('app.empresas.empresa')}}" class="text-decoration-underline"><small class="text-bold"> {{Auth::user()->empresa->nome}}  </small></a>
+           
           </div>
 
           <div class="col-0 col-sm-4 col-md-4 col-lg-4 col-xl-4 pt-4 text-end px-5 d-none d-sm-block">
-              <b><span class="mb-0">Olá, {{ Auth::user()->name}}</span></b>  <br>
+              <b><span class="mb-0">Olá, {{ Auth::user()->nome}}</span></b>  <br>
               @if(Auth::user()->role == 'admin')
                 <span class="mb-0">{{ Auth::user()->grupo->descricao ?? 'Administrador'}}</span>
               @endif
@@ -127,6 +128,7 @@
                 @csrf
                 <button class="btn btn-secondary" type="submit"><i class="fa-solid fa-right-from-bracket mx-1"></i>Sair</button>
               @endif
+              </form>
         </div>
 
     </div>
