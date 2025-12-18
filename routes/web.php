@@ -43,7 +43,6 @@ Route::name('app.')->middleware(['auth'])->group(function () {
 
     Route::name('dash.')->prefix('dash')->controller(HomeController::class)->group(function () {
         Route::get('/index', [App\Http\Controllers\HomeController::class, 'index'])->name('index');
-        
     });
 
     Route::name('grupo_economico.')->prefix('grupo_economico')->controller(GrupoEconomicoController::class)->group(function () {
@@ -51,25 +50,25 @@ Route::name('app.')->middleware(['auth'])->group(function () {
         Route::get('/empresa', 'empresa')->name('empresa');
         Route::get('/get-itens', 'getItens')->name('getItens');
         Route::get('/create', 'create')->name('create');
-     Route::post('/store', 'store')->name('store');
+        Route::post('/store', 'store')->name('store');
         Route::get('/show/{id}', 'show')->name('show');
         Route::get('/edit/{id}', 'edit')->name('edit');
         Route::post('/update/{id}', 'update')->name('update');
         Route::get('/destroy/{id}', 'destroy')->name('destroy');
     });
-  
+
     Route::name('bandeiras.')->prefix('bandeiras')->controller(BandeiraController::class)->group(function () {
         Route::get('/', 'index')->name('index');
         Route::get('/get-itens', 'getItens')->name('getItens');
         Route::get('/create', 'create')->name('create');
-         Route::post('/store', 'store')->name('store');
+        Route::post('/store', 'store')->name('store');
         Route::get('/edit/{id}', 'edit')->name('edit');
         Route::post('/update/{id}', 'update')->name('update');
         Route::get('/destroy/{id}', 'destroy')->name('destroy');
         Route::post('/toggle-status/{id}', 'toggleStatus')->name('toggleStatus');
     });
 
-     Route::name('unidades.')->prefix('unidades')->controller(UnidadeController::class)->group(function () {
+    Route::name('unidades.')->prefix('unidades')->controller(UnidadeController::class)->group(function () {
         Route::get('/', 'index')->name('index');
         Route::get('/get-itens', 'getItens')->name('getItens');
         Route::get('/create', 'create')->name('create');
@@ -88,10 +87,7 @@ Route::name('app.')->middleware(['auth'])->group(function () {
         Route::get('/edit/{id}', 'edit')->name('edit');
         Route::post('/update/{id}', 'update')->name('update');
         Route::get('/destroy/{id}', 'destroy')->name('destroy');
-        Route::get('/get-bandeiras/{grupo_id}','getBandeiras')->name('getBandeiras');
-        Route::get('/get-unidades/{bandeira_id}', 'getUnidades')->name('getUnidades');
-      
+        Route::get('/exportar', 'export')->name('export');
+        Route::get('/exportar-pdf', 'exportPdf')->name('exportPdf');
     });
-  
 });
-

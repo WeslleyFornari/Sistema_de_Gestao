@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\ColaboradoresExport;
 use App\Models\Bandeira;
 use App\Models\Colaborador;
 use App\Models\GrupoEconomico;
@@ -9,6 +10,7 @@ use App\Models\Unidade;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class ColaboradorController extends Controller
 {
@@ -39,15 +41,11 @@ class ColaboradorController extends Controller
 
         if ($request->filled('unidade_id')) {
             $query->where('unidade_id', $request->input('unidade_id'));
-        }
-
-        elseif ($request->filled('bandeira_id')) {
+        } elseif ($request->filled('bandeira_id')) {
             $query->whereHas('unidade', function ($q) use ($request) {
                 $q->where('bandeira_id', $request->input('bandeira_id'));
             });
-        }
-
-        elseif ($request->filled('grupo_id')) {
+        } elseif ($request->filled('grupo_id')) {
             $query->whereHas('unidade.bandeira', function ($q) use ($request) {
                 $q->where('grupo_economico_id', $request->input('grupo_id'));
             });
@@ -147,15 +145,75 @@ class ColaboradorController extends Controller
         return response()->json(['message' => 'Colaborador excluído com sucesso!']);
     }
 
-    public function getBandeiras($grupo_id)
+    public function export(Request $request)
     {
-        $bandeiras = Bandeira::where('grupo_id', $grupo_id)->get(['id', 'nome']);
-        return response()->json($bandeiras);
+        $query = Colaborador::with('unidade');
+
+        if ($request->filled('name')) {
+            $query->where('nome', 'like', '%' . $request->input('name') . '%');
+        }
+        if ($request->filled('email')) {
+            $query->where('email', 'like', '%' . $request->input('email') . '%');
+        }
+        if ($request->filled('cpf')) {
+            $query->where('cpf', 'like', '%' . $request->input('cpf') . '%');
+        }
+
+        if ($request->filled('unidade_id')) {
+            $query->where('unidade_id', $request->input('unidade_id'));
+        } elseif ($request->filled('bandeira_id')) {
+            $query->whereHas('unidade', function ($q) use ($request) {
+                $q->where('bandeira_id', $request->input('bandeira_id'));
+            });
+        } elseif ($request->filled('grupo_id')) {
+            $query->whereHas('unidade.bandeira', function ($q) use ($request) {
+                $q->where('grupo_economico_id', $request->input('grupo_id'));
+            });
+        }
+
+        $query->orderBy('nome', 'asc');
+
+        return \Maatwebsite\Excel\Facades\Excel::download(
+            new ColaboradoresExport($query),
+            'relatorio_colaboradores_' . date('d_m_Y') . '.xlsx'
+        );
     }
 
-    public function getUnidades($bandeira_id)
+    public function exportPdf(Request $request)
     {
-        $unidades = Unidade::where('bandeira_id', $bandeira_id)->get(['id', 'nome']);
-        return response()->json($unidades);
+        $query = Colaborador::query()->with('unidade');
+
+        if ($request->filled('name')) {
+            $query->where('nome', 'like', '%' . $request->input('name') . '%');
+        }
+        if ($request->filled('email')) {
+            $query->where('email', 'like', '%' . $request->input('email') . '%');
+        }
+        if ($request->filled('cpf')) {
+            $query->where('cpf', 'like', '%' . $request->input('cpf') . '%');
+        }
+
+        if ($request->filled('unidade_id')) {
+            $query->where('unidade_id', $request->input('unidade_id'));
+        } elseif ($request->filled('bandeira_id')) {
+            $query->whereHas('unidade', function ($q) use ($request) {
+                $q->where('bandeira_id', $request->input('bandeira_id'));
+            });
+        } elseif ($request->filled('grupo_id')) {
+            $query->whereHas('unidade.bandeira', function ($q) use ($request) {
+                $q->where('grupo_economico_id', $request->input('grupo_id'));
+            });
+        }
+
+        $query->orderBy('nome', 'asc');
+        $colaboradores = $query->get();
+
+        // Carrega a view e passa os dados
+        $pdf = Pdf::loadView('colaboradores.report', compact('colaboradores'));
+
+        // (Opcional) Configura o papel para A4
+        $pdf->setPaper('a4', 'portrait');
+
+        return $pdf->download('relatorio_colaboradores.pdf');
     }
 }

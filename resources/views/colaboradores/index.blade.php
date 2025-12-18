@@ -37,7 +37,7 @@
                 <div class="card-body">
 
                     <div class="row mb-3">
-                        <div class="col-12 col-sm-8 ps-4 my-2 text-center text-sm-start d-block">
+                        <div class="col-12 col-sm-3 ps-4 my-2 text-center text-sm-start d-block">
                             <div class="actions-btn">
                                 <!-- Botões de ação - Criar e recarregar -->
                                 <a href="{{ route('app.colaboradores.create') }}" class="btn btn-primary">
@@ -48,8 +48,18 @@
                                 </button>
                             </div>
                         </div>
+                        <div class="col-12 col-sm-3 ps-4 my-2 text-sm-start d-block">
+                            <button type="button" class="btn btn-success" id="exportExcelBtn">
+                                <i class="fa-solid fa-file-excel me-2"></i> Exportar
+                            </button>
+                        </div>
+                        <div class="col-12 col-sm-3 ps-4 my-2 text-sm-start d-block">
+                            <button type="button" class="btn btn-warning" id="exportPdfBtn">
+                                <i class="fa-solid fa-file-pdf me-2"></i> PDF
+                            </button>
+                        </div>
 
-                        <div class="col-12 col-sm-4">
+                        <div class="col-12 col-sm-3">
                             <!-- Botão para colapsar os filtros e busca -->
                             <button class="btn btn-link w-100 toggleColapse" data-target="#filterCollapse" type="button">
                                 <i class="fa-solid fa-filter"></i> Filtros Avançados
@@ -93,7 +103,7 @@
                                                     <label for="bandeira_id">Bandeira</label>
                                                     <select id="bandeira_id" name="bandeira_id" class="form-select">
                                                         <option value="">Selecione</option>
-                                                          @foreach($bandeiras as $bandeira)
+                                                        @foreach($bandeiras as $bandeira)
                                                         <option value="{{ $bandeira->id }}">{{ $bandeira->nome }}</option>
                                                         @endforeach
                                                     </select>
@@ -103,7 +113,7 @@
                                                     <label for="unidade_id">Unidade</label>
                                                     <select id="unidade_id" name="unidade_id" class="form-select">
                                                         <option value="">Selecione</option>
-                                                         @foreach($unidades as $unidade)
+                                                        @foreach($unidades as $unidade)
                                                         <option value="{{ $unidade->id }}">{{ $unidade->nome_fantasia }}</option>
                                                         @endforeach
                                                     </select>
@@ -238,7 +248,7 @@
         });
     });
 
-// Selects change
+    // Selects change
     const selects = $('#grupo_id, #bandeira_id, #unidade_id');
 
     selects.on('change', function() {
@@ -250,6 +260,23 @@
         } else {
             selects.prop('disabled', false);
         }
+    });
+
+    // Exportar
+    $('#exportExcelBtn').click(function(e) {
+
+        e.preventDefault();
+        var queryParams = $('#filterForm').serialize();
+        var url = "{{ route('app.colaboradores.export') }}?" + queryParams;
+        window.location.href = url;
+    });
+
+    // PDF
+    $('#exportPdfBtn').click(function() {
+
+        var queryParams = $('#filterForm').serialize();
+        var url = "{{ route('app.colaboradores.exportPdf') }}?" + queryParams;
+        window.location.href = url;
     });
 
 </script>
