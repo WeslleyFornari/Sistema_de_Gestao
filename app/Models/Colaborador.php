@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Traits\Auditable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Database\Eloquent\Model;
@@ -9,17 +10,17 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Colaborador extends Authenticatable
 {
-    use HasFactory, SoftDeletes;
+    use HasFactory, SoftDeletes, Auditable;
 
     protected $fillable = [
         'nome',
         'email',
         'cpf',
-        'password', 
+        'password',
         'unidade_id',
     ];
 
-      protected $hidden = [
+    protected $hidden = [
         'password',
         'remember_token',
     ];
@@ -29,7 +30,12 @@ class Colaborador extends Authenticatable
         'updated_at' => 'datetime',
     ];
 
-    //  public function grupo(){
-    //     return $this->hasOne(GrupoEconomico::class, 'id', 'empresa_id');
-    // }
+    public function unidade()
+    {
+        return $this->hasOne(Unidade::class, 'id', 'unidade_id');
+    }
+    public function user()
+    {
+        return $this->hasOne(User::class, 'colaborador_id');
+    }
 }

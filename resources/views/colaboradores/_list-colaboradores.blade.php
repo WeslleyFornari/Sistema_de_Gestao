@@ -11,7 +11,7 @@
     <div class="col-4 col-sm-3">{{ $value->nome ?? '' }}</div>
     <div class="col-4 col-sm-3">{{ $value->email ?? '' }}</div>
     <div class="col-4 col-sm-2">{{ $value->cpf ?? '' }}</div>
-    <div class="col-4 col-sm-2">{{ $value->unidade_id ?? '' }}</div>
+    <div class="col-4 col-sm-2">{{ $value->unidade->nome_fantasia ?? '' }}</div>
    
     <div class="col-4 col-sm-1">
         <div class="dropdown">

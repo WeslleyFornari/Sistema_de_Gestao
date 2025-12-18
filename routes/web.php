@@ -88,7 +88,9 @@ Route::name('app.')->middleware(['auth'])->group(function () {
         Route::get('/edit/{id}', 'edit')->name('edit');
         Route::post('/update/{id}', 'update')->name('update');
         Route::get('/destroy/{id}', 'destroy')->name('destroy');
-        Route::post('/toggle-status/{id}', 'toggleStatus')->name('toggleStatus');
+        Route::get('/get-bandeiras/{grupo_id}','getBandeiras')->name('getBandeiras');
+        Route::get('/get-unidades/{bandeira_id}', 'getUnidades')->name('getUnidades');
+      
     });
   
 });

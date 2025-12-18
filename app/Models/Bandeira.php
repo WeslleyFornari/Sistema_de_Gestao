@@ -22,4 +22,8 @@ class Bandeira extends Model
     {
         return $this->hasOne(GrupoEconomico::class, 'id', 'grupo_economico_id');
     }
+    public function unidades()
+    {
+        return $this->hasMany(Unidade::class, 'bandeira_id');
+    }
 }

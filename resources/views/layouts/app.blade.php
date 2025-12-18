@@ -133,29 +133,7 @@
 
     </div>
 
-    <!-- Side bar xs sm -->
-    <div class="container-fluid d-md-none justify-content-center">
-      <div class="card mt-3">
-            <div class="row mb-3">
-                <div class="col-12 mt-3 ms-3">
-                    <a href="#collapseMenu" class="text-primary toggleColapse" id="menuToggle" data-bs-toggle="collapse" role="button" aria-expanded="false"
-                      aria-controls="collapseMenu">Explorar ...</a>
-                  </div>
-            </div>
-            <div class="collapse" id="collapseMenu">
-              <!-- <div class="card card-body"> -->
-              @if(Auth::user()->role === 'admin')
-                  <div class="row px-3">
-                      @include('layouts.menu._admin')
-                  </div>
-              @elseif(Auth::user()->role === 'grupo')
-                  <div class="row px-3">
-                  @include('layouts.menu._grupo')
-                  </div>
-            @endif
-            </div>
-      </div>
-    </div>
+   
     
 
     <!-- CONTEUDO -->
@@ -202,25 +180,7 @@
 
       });
 
-      // Status Off-line
-      $("body").on('change', '.form-switch .form-check-input', function() {
-
-        if ($(this).is(':checked')) {
-          $(this).siblings('label').html('Ativo')
-          $(this).val('ativo');
-        } else {
-          $(this).siblings('label').html('Inativo')
-        }
-      })
-
-      function getMoney(numero) {
-        return new Intl.NumberFormat('pt-BR', {
-          style: 'currency',
-          currency: 'BRL'
-        }).format(numero).replace('R$', '');
-      }
-
-      // MASCARAS
+  // MASCARAS
       var SPMaskBehavior = function(val) {
           return val.replace(/\D/g, '').length === 11 ? '(00) 00000-0000' : '(00) 0000-00009';
         },
@@ -230,22 +190,15 @@
           }
         };
 
-      $('.phoneMask').mask(SPMaskBehavior, spOptions);
-      $('.moneyMask').mask("#.##0,00", {
-        reverse: true
-      });
-      $('.cepMask').mask('00000-000');
       $('.cpfMask').mask('000.000.000-00', {
         reverse: true
       });
       $('.cnpjMask').mask('00.000.000/0000-00', {
         reverse: true
       });
-      $('.creditCardMask').mask('0000 0000 0000 0000');
-      $('.expirationDateMask').mask('00/00');
-      $('.celMask').mask('(00) 00000-0000');
+    
 
-      // jQuery COLLAPSE  
+    // jQuery COLLAPSE  
       $("body").on('click', '.tooglegeCollapse', function(e) {
 
         e.preventDefault();
@@ -304,48 +257,50 @@
         });
       })
 
-      function buscaCep(cep) {
-        $.getJSON("https://viacep.com.br/ws/" + cep + "/json/?callback=?", function(dados) {
-          $("input[name='endereco']").val(dados.logradouro)
-          $("input[name='bairro']").val(dados.bairro)
-          $("input[name='cidade']").val(dados.localidade)
-          $("input[name='estado']").val(dados.uf)
+  // Get CNPJ
+    $('#cnpj').on('change', function() {
 
-        });
-      }
-      $("#buscaCep").change(function() {
-        buscaCep($(this).val())
-      });
+            var cnpjInput = this.value;
 
-      $("#searchCep").click(function(e) {
-        e.preventDefault();
-        buscaCep($("#buscaCep").val())
-      })
+            if (validaCNPJ(cnpjInput)) {
 
-      // GetMoney e SaveMoney
-      function saveMoney($value) {
+              return true
 
-        if ($value === null) {
-          return 0.00;
-        }
-        var $money = $value.replace(".", "");
+            } else {
 
-        $money = $money.replace(",", ".", $money);
+              swal.fire({
+                title: "CNPJ inválido!",
+                icon: "error",
+              }).then(function() {
 
-        return $money;
-      }
+                $('#cnpj').val('');
+              });
+            }
+    });
 
-      function getMoney($value) {
+    function validaCNPJ (cnpj) {
+        var b = [ 6, 5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2 ]
+        var c = String(cnpj).replace(/[^\d]/g, '')
+        
+        if(c.length !== 14)
+            return false
 
-        if ($value === null) {
-          return '';
-        }
+        if(/0{14}/.test(c))
+            return false
 
-        return accounting.formatMoney($value, '', 2, ".", ",");
-      }
+        for (var i = 0, n = 0; i < 12; n += c[i] * b[++i]);
+        if(c[12] != (((n %= 11) < 2) ? 0 : 11 - n))
+            return false
 
+        for (var i = 0, n = 0; i <= 12; n += c[i] * b[i++]);
+        if(c[13] != (((n %= 11) < 2) ? 0 : 11 - n))
+            return false
 
-      // CPF VALIDADOR
+        return true
+    }
+     
+      
+  // Get CPF
       $('#cpf').on('change', function() {
 
         var cpfInput = this.value;
@@ -356,7 +311,7 @@
 
         } else {
 
-          swal({
+          swal.fire({
             title: "CPF inválido!",
             icon: "error",
           }).then(function() {
@@ -415,6 +370,7 @@
 
         return true
       }
+
     });
   </script>
 

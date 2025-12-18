@@ -1,7 +1,21 @@
-# Instalação do projeto
+# Pré-requisitos:
+- Docker Desktop
+- WSL 2
 
+# Instalação do projeto
+git clone ...
 # Copie a pasta do projeto /Sistema_de_Gestão para o lugar desejado em sua maquina
 # Inicie o Docker Desktop
+
+# Abra o terminal WSL e os comandos:
+ls /home
+su - {usuario}  Obs: não pode ser root
+
+sudo nano /etc/wsl.conf
+
+
+
+
 # Na raiz do projeto abra o shell linux WSL e execute o comando abaixo para criar o ambiente em Docker
 ./vendor/bin/sail up -d --build
 

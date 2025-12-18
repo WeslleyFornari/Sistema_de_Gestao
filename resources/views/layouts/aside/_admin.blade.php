@@ -59,6 +59,7 @@
   </a>
 </li>
 
+@if(auth()->user()->role === 'admin')
 <li class="nav-item">
   <a class="nav-link  {{ request()->routeIs('app.colaboradores.*') ? 'active' : '' }}" href="{{route('app.colaboradores.index')}}">
     <div class="icon icon-shop icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
@@ -67,6 +68,16 @@
     <span class="nav-link-text ms-1">Colaboradores</span>
   </a>
 </li>
+@else
+<li class="nav-item">
+  <a class="nav-link  {{ request()->routeIs('app.colaboradores.*') ? 'active' : '' }}" href="{{route('app.colaboradores.edit',['id' => auth()->user()->colaborador_id] )}}">
+    <div class="icon icon-shop icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
+       <i class="fa-solid fa-user"></i>
+    </div>
+    <span class="nav-link-text ms-1">Colaborador</span>
+  </a>
+</li>
+@endif
 
 <br>
 

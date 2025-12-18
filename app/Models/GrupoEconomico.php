@@ -17,4 +17,9 @@ class GrupoEconomico extends Model
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
     ];
+
+    public function bandeiras()
+    {
+        return $this->hasMany(Bandeira::class, 'grupo_id');
+    }
 }

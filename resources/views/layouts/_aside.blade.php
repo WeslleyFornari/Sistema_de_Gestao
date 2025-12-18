@@ -10,6 +10,7 @@
     width: 80% !important;
     height: 60% !important;
     object-fit: contain;
+    filter: brightness(1.09) contrast(1.0);
   }
 </style>
 

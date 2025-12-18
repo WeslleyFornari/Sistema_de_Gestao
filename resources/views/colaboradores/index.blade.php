@@ -7,6 +7,7 @@
         border: 1px solid rgb(222, 223, 223);
         border-radius: 5px;
     }
+
     .pagination {
         flex-wrap: wrap;
         justify-content: center;
@@ -16,27 +17,28 @@
     .pagination li {
         margin: 2px;
     }
+
     @media (min-width: 576px) and (max-width: 800px) {
-      .ellipsis {
-          white-space: nowrap;
-          width: 60px;
-          overflow: hidden;
-          text-overflow: ellipsis;
-          display: inline-block;
-      }
-    } 
+        .ellipsis {
+            white-space: nowrap;
+            width: 60px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: inline-block;
+        }
+    }
 </style>
 
 <div class="py-4">
-<div class="row">
-    <div class="col-md-12">
+    <div class="row">
+        <div class="col-md-12">
 
-        <div class="card">
-            <div class="card-body">
+            <div class="card">
+                <div class="card-body">
 
-            <div class="row mb-3">
-                    <div class="col-12 col-sm-8 ps-4 my-2 text-center text-sm-start d-block">
-                    <div class="actions-btn">
+                    <div class="row mb-3">
+                        <div class="col-12 col-sm-8 ps-4 my-2 text-center text-sm-start d-block">
+                            <div class="actions-btn">
                                 <!-- Botões de ação - Criar e recarregar -->
                                 <a href="{{ route('app.colaboradores.create') }}" class="btn btn-primary">
                                     <i class="fa-solid fa-plus"></i> Adicionar
@@ -45,17 +47,17 @@
                                     <i class="fa-solid fa-sync"></i>
                                 </button>
                             </div>
-                    </div>
+                        </div>
 
-                    <div class="col-12 col-sm-4">
-                        <!-- Botão para colapsar os filtros e busca -->
-                        <button class="btn btn-link w-100 toggleColapse" data-target="#filterCollapse" type="button">
+                        <div class="col-12 col-sm-4">
+                            <!-- Botão para colapsar os filtros e busca -->
+                            <button class="btn btn-link w-100 toggleColapse" data-target="#filterCollapse" type="button">
                                 <i class="fa-solid fa-filter"></i> Filtros Avançados
                             </button>
+                        </div>
                     </div>
-                </div>
-              <!-- Filtros e busca -->
-              <div class="collapse" id="filterCollapse">
+                    <!-- Filtros e busca -->
+                    <div class="collapse" id="filterCollapse">
                         <div class="row mb-3" id="FiltroGeral">
                             <!-- Filtros adicionais -->
                             <div class="col-12 col-md-12">
@@ -65,16 +67,49 @@
                                         <div class="col-12 col-md-12 mb-3">
                                             <div class="row">
 
-                                                <div class="col-12 col-sm-4 col-md-4 col-lg-4">
+                                                <div class="col-12 col-sm-3 col-md-4 col-lg-4">
                                                     <label for="Nome">Nome</label>
                                                     <input type="text" id="name" name="name" class="form-control">
                                                 </div>
-                                                <div class="col-12 col-sm-4 col-md-4 col-lg-4">
+                                                <div class="col-12 col-sm-3 col-md-4 col-lg-4">
                                                     <label for="Email">Email</label>
                                                     <input type="text" id="email" name="email" class="form-control">
                                                 </div>
+                                                <div class="col-12 col-sm-3 col-md-4 col-lg-4">
+                                                    <label for="CPF">CPF</label>
+                                                    <input type="text" id="cpf" name="cpf" class="form-control">
+                                                </div>
+                                                <div class="col-12 col-sm-3 col-md-4 col-lg-4">
+                                                    <label for="grupo_id">Grupo Economico</label>
+                                                    <select id="grupo_id" name="grupo_id" class="form-select">
+                                                        <option value="">Selecione</option>
+                                                        @foreach($grupos as $grupo)
+                                                        <option value="{{ $grupo->id }}">{{ $grupo->nome }}</option>
+                                                        @endforeach
+                                                    </select>
+                                                </div>
+
+                                                <div class="col-12 col-sm-3 col-md-4 col-lg-4">
+                                                    <label for="bandeira_id">Bandeira</label>
+                                                    <select id="bandeira_id" name="bandeira_id" class="form-select">
+                                                        <option value="">Selecione</option>
+                                                          @foreach($bandeiras as $bandeira)
+                                                        <option value="{{ $bandeira->id }}">{{ $bandeira->nome }}</option>
+                                                        @endforeach
+                                                    </select>
+                                                </div>
+
+                                                <div class="col-12 col-sm-3 col-md-4 col-lg-4">
+                                                    <label for="unidade_id">Unidade</label>
+                                                    <select id="unidade_id" name="unidade_id" class="form-select">
+                                                        <option value="">Selecione</option>
+                                                         @foreach($unidades as $unidade)
+                                                        <option value="{{ $unidade->id }}">{{ $unidade->nome_fantasia }}</option>
+                                                        @endforeach
+                                                    </select>
+                                                </div>
                                                 <!-- Botões -->
-                                                <div class="col-12 col-sm-4 col-md-4 col-lg-4" style="margin-top:30px;">
+                                                <div class="col-12 col-sm-3 col-md-4 col-lg-4" style="margin-top:30px;">
                                                     <button type="submit" class="btn btn-primary">filtrar</button>
                                                     <button type="button" class="btn btn-danger" id="clearFilterBtn">Limpar</button>
                                                 </div>
@@ -86,12 +121,12 @@
                         </div>
                     </div>
 
-                <div id="response"></div>
+                    <div id="response"></div>
+                </div>
             </div>
-        </div>
 
+        </div>
     </div>
-</div>
 </div>
 @endsection
 
@@ -135,68 +170,30 @@
     }
 
     $('#filterForm').submit(function(e) {
-            e.preventDefault();
-            var url = $(this).attr('action');
-            loadItems(url);
-        });
+        e.preventDefault();
+        var url = $(this).attr('action');
+        loadItems(url);
+    });
 
-        $("body").on('click', '.pagination .page-link', function(e) {
-            e.preventDefault();
-            var url = $(this).attr('href');
-            loadItems(url)
-        });
+    $("body").on('click', '.pagination .page-link', function(e) {
+        e.preventDefault();
+        var url = $(this).attr('href');
+        loadItems(url)
+    });
 
-        $('#reloadItems').click(function() {
-            loadItems();
-        });
+    $('#reloadItems').click(function() {
+        loadItems();
+    });
 
-        $('#clearFilterBtn').click(function() {
-            $('#filterForm')[0].reset();
-            $('.select2').val(null).trigger('change');
-            $('.datepicker').val('');
-            loadItems();
-        });
+    $('#clearFilterBtn').click(function() {
+        $('#filterForm')[0].reset();
+        $('.select2').val(null).trigger('change');
+        selects.prop('disabled', false);
+        $('.datepicker').val('');
+        loadItems();
+    });
 
     loadItems();
-        
-    // Toggle Status
-    $(document).on('change', '.toggle-status', function(e) {
-
-        var userId = $(this).data('id');
-        var statusElement = $(this);
-
-        var url = "{{ route('app.colaboradores.toggleStatus', ':id') }}".replace(':id', userId);
-
-        $.ajax({
-            url: url,
-            type: 'POST',
-            data: {
-                _token: '{{ csrf_token() }}'
-            },
-            success: function(response) {
-                Swal.fire({
-                    icon: 'success',
-                    title: 'Sucesso',
-                    text: response.message,
-                    toast: true,
-                    position: 'top-end',
-                    timer: 3000,
-                    showConfirmButton: false
-                });
-            },
-            error: function() {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Erro',
-                    text: 'Erro ao tentar alterar o status.',
-                    toast: true,
-                    position: 'top-end',
-                    timer: 3000,
-                    showConfirmButton: false
-                });
-            }
-        });
-    });
 
 
     // Exclusão de item
@@ -241,13 +238,19 @@
         });
     });
 
+// Selects change
+    const selects = $('#grupo_id, #bandeira_id, #unidade_id');
 
-    document.querySelector('form').addEventListener('submit', function(event) {
-        let select = document.getElementById('grupoSelect');
-        if (select.value === "") {
-            alert('Por favor, selecione uma opção válida.');
-            event.preventDefault();
+    selects.on('change', function() {
+        const selectedId = $(this).attr('id');
+        const hasValue = $(this).val() !== "";
+
+        if (hasValue) {
+            selects.not(this).prop('disabled', true).val("");
+        } else {
+            selects.prop('disabled', false);
         }
     });
+
 </script>
 @endsection
