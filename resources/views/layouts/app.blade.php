@@ -5,6 +5,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <!-- TOKEN -->
+
   <meta name="csrf-token" content="{{ csrf_token() }}">
   <title>
     @yield('title')
@@ -106,55 +107,43 @@
 
   <main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg " style="overflow-x: hidden;">
 
-    <div class="row pt-4 mx-5">
+    <div class="row pt-4 mx-3">
 
-          <div class="col-8 col-sm-4 col-md-5 col-lg-5 col-xl-5 pt-4">
-
-            <h5 class="font-weight-bolder mb-0">@yield('title')</h5>
-            <a href="{{Route('app.empresas.empresa')}}" class="text-decoration-underline"><small class="text-bold"> {{Auth::user()->empresa->nome}}  </small></a>
-          </div>
-
-          <div class="col-0 col-sm-4 col-md-4 col-lg-4 col-xl-4 pt-4 text-end px-5 d-none d-sm-block">
-              <b><span class="mb-0">Olá, {{ Auth::user()->name}}</span></b>  <br>
-              @if(Auth::user()->role == 'admin')
-                <span class="mb-0">{{ Auth::user()->grupo->descricao ?? 'Administrador'}}</span>
-              @endif
-          </div>
-
-          <div class="col-4 col-sm-4 col-md-3 col-lg-3 col-xl-3 pt-4 pe-4 text-end">
-              @if(Auth::check())
-              <form method="POST" action="{{ route('logout') }}">
-                @csrf
-                <button class="btn btn-secondary" type="submit"><i class="fa-solid fa-right-from-bracket mx-1"></i>Sair</button>
-              @endif
-        </div>
-
-    </div>
-
-    <!-- Side bar xs sm -->
-    <div class="container-fluid d-md-none justify-content-center">
-      <div class="card mt-3">
-            <div class="row mb-3">
-                <div class="col-12 mt-3 ms-3">
-                    <a href="#collapseMenu" class="text-primary toggleColapse" id="menuToggle" data-bs-toggle="collapse" role="button" aria-expanded="false"
-                      aria-controls="collapseMenu">Explorar ...</a>
-                  </div>
-            </div>
-            <div class="collapse" id="collapseMenu">
-              <!-- <div class="card card-body"> -->
-              @if(Auth::user()->role === 'admin')
-                  <div class="row px-3">
-                      @include('layouts.menu._admin')
-                  </div>
-              @elseif(Auth::user()->role === 'grupo')
-                  <div class="row px-3">
-                  @include('layouts.menu._grupo')
-                  </div>
-            @endif
-            </div>
+      <div class="col-sm-3 pt-4">
+        <h5 class="font-weight-bolder mb-0">@yield('title')</h5>
       </div>
+
+      <!-- Alerts -->
+      <div class="col-0 col-sm-7 pt-4 px-5 d-flex justify-content-start">
+        @if(session('info'))
+       <div id="auto-close-alert" 
+     class="alert alert-primary border-0 shadow-sm text-white text-center" 
+     role="alert" 
+     style="background-color: #0d6efd !important; background-image: none !important; opacity: 1 !important;">
+    {{ session('info') }}
+</div>
+        @endif
+
+        @if(session('success'))
+        <div id="auto-close-alert" class="alert alert-success border-0 shadow-sm text-white text-center" role="alert" style="background-color: #198754 !important;">
+          {{ session('success') }}
+        </div>
+        @endif
+      </div>
+
+      <div class="col-sm-2 pt-4 text-end">
+        @if(Auth::check())
+        <form method="POST" action="{{ route('logout') }}">
+          @csrf
+          <button class="btn btn-secondary" type="submit"><i class="fa-solid fa-right-from-bracket mx-1"></i>Sair</button>
+          @endif
+        </form>
+      </div>
+
     </div>
-    
+
+
+
 
     <!-- CONTEUDO -->
     <div class="container-fluid">
@@ -200,24 +189,6 @@
 
       });
 
-      // Status Off-line
-      $("body").on('change', '.form-switch .form-check-input', function() {
-
-        if ($(this).is(':checked')) {
-          $(this).siblings('label').html('Ativo')
-          $(this).val('ativo');
-        } else {
-          $(this).siblings('label').html('Inativo')
-        }
-      })
-
-      function getMoney(numero) {
-        return new Intl.NumberFormat('pt-BR', {
-          style: 'currency',
-          currency: 'BRL'
-        }).format(numero).replace('R$', '');
-      }
-
       // MASCARAS
       var SPMaskBehavior = function(val) {
           return val.replace(/\D/g, '').length === 11 ? '(00) 00000-0000' : '(00) 0000-00009';
@@ -228,20 +199,13 @@
           }
         };
 
-      $('.phoneMask').mask(SPMaskBehavior, spOptions);
-      $('.moneyMask').mask("#.##0,00", {
-        reverse: true
-      });
-      $('.cepMask').mask('00000-000');
       $('.cpfMask').mask('000.000.000-00', {
         reverse: true
       });
       $('.cnpjMask').mask('00.000.000/0000-00', {
         reverse: true
       });
-      $('.creditCardMask').mask('0000 0000 0000 0000');
-      $('.expirationDateMask').mask('00/00');
-      $('.celMask').mask('(00) 00000-0000');
+
 
       // jQuery COLLAPSE  
       $("body").on('click', '.tooglegeCollapse', function(e) {
@@ -302,48 +266,50 @@
         });
       })
 
-      function buscaCep(cep) {
-        $.getJSON("https://viacep.com.br/ws/" + cep + "/json/?callback=?", function(dados) {
-          $("input[name='endereco']").val(dados.logradouro)
-          $("input[name='bairro']").val(dados.bairro)
-          $("input[name='cidade']").val(dados.localidade)
-          $("input[name='estado']").val(dados.uf)
+      // Get CNPJ
+      $('#cnpj').on('change', function() {
 
-        });
-      }
-      $("#buscaCep").change(function() {
-        buscaCep($(this).val())
+        var cnpjInput = this.value;
+
+        if (validaCNPJ(cnpjInput)) {
+
+          return true
+
+        } else {
+
+          swal.fire({
+            title: "CNPJ inválido!",
+            icon: "error",
+          }).then(function() {
+
+            $('#cnpj').val('');
+          });
+        }
       });
 
-      $("#searchCep").click(function(e) {
-        e.preventDefault();
-        buscaCep($("#buscaCep").val())
-      })
+      function validaCNPJ(cnpj) {
+        var b = [6, 5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2]
+        var c = String(cnpj).replace(/[^\d]/g, '')
 
-      // GetMoney e SaveMoney
-      function saveMoney($value) {
+        if (c.length !== 14)
+          return false
 
-        if ($value === null) {
-          return 0.00;
-        }
-        var $money = $value.replace(".", "");
+        if (/0{14}/.test(c))
+          return false
 
-        $money = $money.replace(",", ".", $money);
+        for (var i = 0, n = 0; i < 12; n += c[i] * b[++i]);
+        if (c[12] != (((n %= 11) < 2) ? 0 : 11 - n))
+          return false
 
-        return $money;
-      }
+        for (var i = 0, n = 0; i <= 12; n += c[i] * b[i++]);
+        if (c[13] != (((n %= 11) < 2) ? 0 : 11 - n))
+          return false
 
-      function getMoney($value) {
-
-        if ($value === null) {
-          return '';
-        }
-
-        return accounting.formatMoney($value, '', 2, ".", ",");
+        return true
       }
 
 
-      // CPF VALIDADOR
+      // Get CPF
       $('#cpf').on('change', function() {
 
         var cpfInput = this.value;
@@ -354,7 +320,7 @@
 
         } else {
 
-          swal({
+          swal.fire({
             title: "CPF inválido!",
             icon: "error",
           }).then(function() {
@@ -413,8 +379,25 @@
 
         return true
       }
+
     });
   </script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const alert = document.getElementById('auto-close-alert');
+        if (alert) {
+            setTimeout(() => {
+              
+                alert.style.transition = "opacity 0.5s ease";
+                alert.style.opacity = "0";
+                
+                setTimeout(() => {
+                    alert.remove();
+                }, 500); 
+            }, 5000);
+        }
+    });
+</script>
 
   @yield('scripts')
 </body>

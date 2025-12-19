@@ -11,7 +11,7 @@ use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable, SoftDeletes;
+    use HasApiTokens, HasFactory, Notifiable;
 
     /**
      * The attributes that are mass assignable.
@@ -20,24 +20,15 @@ class User extends Authenticatable
      */
     protected $fillable = [
         
-        'empresa_id',
-        'name',
+        'colaborador_id',
         'email',
-        'grupo_id',
         'password',
         'role',
-        'status'
+      
     ];
     
-// Relacionamento Usuarios -> Empresa
-    public function empresa(){
-
-        return $this->hasOne(Empresas::class, 'id', 'empresa_id');
-    }
-
-    public function grupo(){
-
-        return $this->hasOne(Grupos::class, 'id', 'grupo_id');
+    public function colaborador(){
+        return $this->hasOne(Colaborador::class, 'id', 'colaborador_id');
     }
 
     /**
