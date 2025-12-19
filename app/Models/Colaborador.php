@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Colaborador extends Authenticatable
 {
-    use HasFactory, SoftDeletes, Auditable;
+    use HasFactory, Auditable;
 
     protected $fillable = [
         'nome',

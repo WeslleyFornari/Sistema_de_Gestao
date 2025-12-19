@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class GrupoEconomico extends Model
 {
-    use HasFactory, SoftDeletes, Auditable;
+    use HasFactory, Auditable;
 
     protected $fillable = ['nome'];
 

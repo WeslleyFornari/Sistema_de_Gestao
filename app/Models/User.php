@@ -11,7 +11,7 @@ use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable, SoftDeletes;
+    use HasApiTokens, HasFactory, Notifiable;
 
     /**
      * The attributes that are mass assignable.
@@ -27,9 +27,7 @@ class User extends Authenticatable
       
     ];
     
-// Relacionamento Usuarios -> Empresa
     public function colaborador(){
-
         return $this->hasOne(Colaborador::class, 'id', 'colaborador_id');
     }
 

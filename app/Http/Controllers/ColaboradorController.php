@@ -3,9 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Exports\ColaboradoresExport;
+use App\Jobs\ExportarColaboradoresJob;
+use App\Jobs\ExportarColaboradoresPdfJob;
 use App\Models\Bandeira;
 use App\Models\Colaborador;
 use App\Models\GrupoEconomico;
+use App\Models\Report;
 use App\Models\Unidade;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -30,7 +33,8 @@ class ColaboradorController extends Controller
         $query = Colaborador::query();
 
         if ($request->filled('nome')) {
-            $query->where('nome', 'like', '%' . $request->input('name') . '%');
+          
+            $query->where('nome', 'like', '%' . $request->input('nome') . '%');
         }
         if ($request->filled('email')) {
             $query->where('email', 'like', '%' . $request->input('email') . '%');
@@ -147,73 +151,40 @@ class ColaboradorController extends Controller
 
     public function export(Request $request)
     {
-        $query = Colaborador::with('unidade');
+        try {
 
-        if ($request->filled('name')) {
-            $query->where('nome', 'like', '%' . $request->input('name') . '%');
-        }
-        if ($request->filled('email')) {
-            $query->where('email', 'like', '%' . $request->input('email') . '%');
-        }
-        if ($request->filled('cpf')) {
-            $query->where('cpf', 'like', '%' . $request->input('cpf') . '%');
-        }
+            $filtros = $request->all();
+            $report = Report::create([
+                'colaborador_id'   => auth()->user()->colaborador_id,
+                'file_name' => 'Relatório de Colaboradores - ' . now()->format('d/m/Y H:i'),
+                'status'    => 'pending',
+            ]);
 
-        if ($request->filled('unidade_id')) {
-            $query->where('unidade_id', $request->input('unidade_id'));
-        } elseif ($request->filled('bandeira_id')) {
-            $query->whereHas('unidade', function ($q) use ($request) {
-                $q->where('bandeira_id', $request->input('bandeira_id'));
-            });
-        } elseif ($request->filled('grupo_id')) {
-            $query->whereHas('unidade.bandeira', function ($q) use ($request) {
-                $q->where('grupo_economico_id', $request->input('grupo_id'));
-            });
+            ExportarColaboradoresJob::dispatch($report->id, $filtros);
+            return back()->with('info', 'A exportação foi iniciada e está sendo processada ...');
+        } catch (\Exception $e) {
+
+            return back()->with('error', 'Erro ao solicitar exportação: ' . $e->getMessage());
         }
-
-        $query->orderBy('nome', 'asc');
-
-        return \Maatwebsite\Excel\Facades\Excel::download(
-            new ColaboradoresExport($query),
-            'relatorio_colaboradores_' . date('d_m_Y') . '.xlsx'
-        );
     }
 
     public function exportPdf(Request $request)
     {
-        $query = Colaborador::query()->with('unidade');
+        try {
 
-        if ($request->filled('name')) {
-            $query->where('nome', 'like', '%' . $request->input('name') . '%');
+            $filtros = $request->all();
+            $report = Report::create([
+                'colaborador_id'   => auth()->user()->colaborador_id,
+                'file_name' => 'Relatório de Colaboradores - ' . now()->format('d/m/Y H:i'),
+                'status'    => 'pending',
+            ]);
+
+            ExportarColaboradoresPdfJob::dispatch($report->id, $filtros);
+
+            return back()->with('info', 'A exportação em PDF está sendo processada ...');
+        } catch (\Exception $e) {
+
+            return back()->with('error', 'Erro ao solicitar exportação: ' . $e->getMessage());
         }
-        if ($request->filled('email')) {
-            $query->where('email', 'like', '%' . $request->input('email') . '%');
-        }
-        if ($request->filled('cpf')) {
-            $query->where('cpf', 'like', '%' . $request->input('cpf') . '%');
-        }
-
-        if ($request->filled('unidade_id')) {
-            $query->where('unidade_id', $request->input('unidade_id'));
-        } elseif ($request->filled('bandeira_id')) {
-            $query->whereHas('unidade', function ($q) use ($request) {
-                $q->where('bandeira_id', $request->input('bandeira_id'));
-            });
-        } elseif ($request->filled('grupo_id')) {
-            $query->whereHas('unidade.bandeira', function ($q) use ($request) {
-                $q->where('grupo_economico_id', $request->input('grupo_id'));
-            });
-        }
-
-        $query->orderBy('nome', 'asc');
-        $colaboradores = $query->get();
-
-        // Carrega a view e passa os dados
-        $pdf = Pdf::loadView('colaboradores.report', compact('colaboradores'));
-
-        // (Opcional) Configura o papel para A4
-        $pdf->setPaper('a4', 'portrait');
-
-        return $pdf->download('relatorio_colaboradores.pdf');
     }
 }

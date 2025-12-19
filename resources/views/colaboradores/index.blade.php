@@ -48,12 +48,12 @@
                                 </button>
                             </div>
                         </div>
-                        <div class="col-12 col-sm-3 ps-4 my-2 text-sm-start d-block">
+                        <div class="col-12 col-sm-2 ps-4 my-2 text-sm-end d-block">
                             <button type="button" class="btn btn-success" id="exportExcelBtn">
                                 <i class="fa-solid fa-file-excel me-2"></i> Exportar
                             </button>
                         </div>
-                        <div class="col-12 col-sm-3 ps-4 my-2 text-sm-start d-block">
+                        <div class="col-12 col-sm-4 my-2 text-sm-start d-block">
                             <button type="button" class="btn btn-warning" id="exportPdfBtn">
                                 <i class="fa-solid fa-file-pdf me-2"></i> PDF
                             </button>
@@ -79,7 +79,7 @@
 
                                                 <div class="col-12 col-sm-3 col-md-4 col-lg-4">
                                                     <label for="Nome">Nome</label>
-                                                    <input type="text" id="name" name="name" class="form-control">
+                                                    <input type="text" id="nome" name="nome" class="form-control">
                                                 </div>
                                                 <div class="col-12 col-sm-3 col-md-4 col-lg-4">
                                                     <label for="Email">Email</label>

@@ -50,11 +50,12 @@ class UnidadeController extends Controller
             [
                 'nome_fantasia' => 'required|string|max:255',
                 'razao_social'  => 'required|string|max:255',
-                'cnpj'          => 'required|string|min:18',
+                'cnpj'          => 'required|string|min:18|unique:unidades,cnpj',
                 'bandeira_id'   => 'required|exists:bandeiras,id'
             ],
             [
                 'cnpj.min' => 'formato do CNPJ está inválido',
+                'cnpj.unique' => 'Este CNPJ já está cadastrado em outra unidade.'
             ]
         );
 

@@ -13,9 +13,6 @@ su - {usuario}  Obs: não pode ser root
 
 sudo nano /etc/wsl.conf
 
-
-
-
 # Na raiz do projeto abra o shell linux WSL e execute o comando abaixo para criar o ambiente em Docker
 ./vendor/bin/sail up -d --build
 
@@ -25,6 +22,8 @@ sudo nano /etc/wsl.conf
 ./vendor/bin/sail down 
 # rodar o projeto #
 ./vendor/bin/sail up -d
+# Suba o serviços de filas #
+./vendor/bin/sail artisan queue:work
 
 # Crie o banco de dados e as tabelas
 ./vendor/bin/sail artisan migrate

@@ -5,7 +5,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <!-- TOKEN -->
-  
+
   <meta name="csrf-token" content="{{ csrf_token() }}">
   <title>
     @yield('title')
@@ -107,34 +107,43 @@
 
   <main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg " style="overflow-x: hidden;">
 
-    <div class="row pt-4 mx-5">
+    <div class="row pt-4 mx-3">
 
-          <div class="col-8 col-sm-4 col-md-5 col-lg-5 col-xl-5 pt-4">
+      <div class="col-sm-3 pt-4">
+        <h5 class="font-weight-bolder mb-0">@yield('title')</h5>
+      </div>
 
-            <h5 class="font-weight-bolder mb-0">@yield('title')</h5>
-           
-          </div>
+      <!-- Alerts -->
+      <div class="col-0 col-sm-7 pt-4 px-5 d-flex justify-content-start">
+        @if(session('info'))
+       <div id="auto-close-alert" 
+     class="alert alert-primary border-0 shadow-sm text-white text-center" 
+     role="alert" 
+     style="background-color: #0d6efd !important; background-image: none !important; opacity: 1 !important;">
+    {{ session('info') }}
+</div>
+        @endif
 
-          <div class="col-0 col-sm-4 col-md-4 col-lg-4 col-xl-4 pt-4 text-end px-5 d-none d-sm-block">
-              <b><span class="mb-0">Olá, {{ Auth::user()->nome}}</span></b>  <br>
-              @if(Auth::user()->role == 'admin')
-                <span class="mb-0">{{ Auth::user()->grupo->descricao ?? 'Administrador'}}</span>
-              @endif
-          </div>
-
-          <div class="col-4 col-sm-4 col-md-3 col-lg-3 col-xl-3 pt-4 pe-4 text-end">
-              @if(Auth::check())
-              <form method="POST" action="{{ route('logout') }}">
-                @csrf
-                <button class="btn btn-secondary" type="submit"><i class="fa-solid fa-right-from-bracket mx-1"></i>Sair</button>
-              @endif
-              </form>
+        @if(session('success'))
+        <div id="auto-close-alert" class="alert alert-success border-0 shadow-sm text-white text-center" role="alert" style="background-color: #198754 !important;">
+          {{ session('success') }}
         </div>
+        @endif
+      </div>
+
+      <div class="col-sm-2 pt-4 text-end">
+        @if(Auth::check())
+        <form method="POST" action="{{ route('logout') }}">
+          @csrf
+          <button class="btn btn-secondary" type="submit"><i class="fa-solid fa-right-from-bracket mx-1"></i>Sair</button>
+          @endif
+        </form>
+      </div>
 
     </div>
 
-   
-    
+
+
 
     <!-- CONTEUDO -->
     <div class="container-fluid">
@@ -180,7 +189,7 @@
 
       });
 
-  // MASCARAS
+      // MASCARAS
       var SPMaskBehavior = function(val) {
           return val.replace(/\D/g, '').length === 11 ? '(00) 00000-0000' : '(00) 0000-00009';
         },
@@ -196,9 +205,9 @@
       $('.cnpjMask').mask('00.000.000/0000-00', {
         reverse: true
       });
-    
 
-    // jQuery COLLAPSE  
+
+      // jQuery COLLAPSE  
       $("body").on('click', '.tooglegeCollapse', function(e) {
 
         e.preventDefault();
@@ -257,50 +266,50 @@
         });
       })
 
-  // Get CNPJ
-    $('#cnpj').on('change', function() {
+      // Get CNPJ
+      $('#cnpj').on('change', function() {
 
-            var cnpjInput = this.value;
+        var cnpjInput = this.value;
 
-            if (validaCNPJ(cnpjInput)) {
+        if (validaCNPJ(cnpjInput)) {
 
-              return true
+          return true
 
-            } else {
+        } else {
 
-              swal.fire({
-                title: "CNPJ inválido!",
-                icon: "error",
-              }).then(function() {
+          swal.fire({
+            title: "CNPJ inválido!",
+            icon: "error",
+          }).then(function() {
 
-                $('#cnpj').val('');
-              });
-            }
-    });
+            $('#cnpj').val('');
+          });
+        }
+      });
 
-    function validaCNPJ (cnpj) {
-        var b = [ 6, 5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2 ]
+      function validaCNPJ(cnpj) {
+        var b = [6, 5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2]
         var c = String(cnpj).replace(/[^\d]/g, '')
-        
-        if(c.length !== 14)
-            return false
 
-        if(/0{14}/.test(c))
-            return false
+        if (c.length !== 14)
+          return false
+
+        if (/0{14}/.test(c))
+          return false
 
         for (var i = 0, n = 0; i < 12; n += c[i] * b[++i]);
-        if(c[12] != (((n %= 11) < 2) ? 0 : 11 - n))
-            return false
+        if (c[12] != (((n %= 11) < 2) ? 0 : 11 - n))
+          return false
 
         for (var i = 0, n = 0; i <= 12; n += c[i] * b[i++]);
-        if(c[13] != (((n %= 11) < 2) ? 0 : 11 - n))
-            return false
+        if (c[13] != (((n %= 11) < 2) ? 0 : 11 - n))
+          return false
 
         return true
-    }
-     
-      
-  // Get CPF
+      }
+
+
+      // Get CPF
       $('#cpf').on('change', function() {
 
         var cpfInput = this.value;
@@ -373,6 +382,22 @@
 
     });
   </script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const alert = document.getElementById('auto-close-alert');
+        if (alert) {
+            setTimeout(() => {
+              
+                alert.style.transition = "opacity 0.5s ease";
+                alert.style.opacity = "0";
+                
+                setTimeout(() => {
+                    alert.remove();
+                }, 500); 
+            }, 5000);
+        }
+    });
+</script>
 
   @yield('scripts')
 </body>

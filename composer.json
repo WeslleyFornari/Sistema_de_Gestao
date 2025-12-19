@@ -37,7 +37,7 @@
             "Tests\\": "tests/"
         },
         "files": [
-            "app/helpersBlade.php"
+          
           ]
     },
     "scripts": {

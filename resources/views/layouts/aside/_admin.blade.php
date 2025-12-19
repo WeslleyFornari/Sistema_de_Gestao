@@ -68,6 +68,23 @@
     <span class="nav-link-text ms-1">Colaboradores</span>
   </a>
 </li>
+<li class="nav-item">
+  <a class="nav-link  {{ request()->routeIs('app.relatorios.*') ? 'active' : '' }}" href="{{route('app.relatorios.index')}}">
+    <div class="icon icon-shop icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
+       <i class="fa-solid fa-user"></i>
+    </div>
+    <span class="nav-link-text ms-1">Relatórios</span>
+  </a>
+</li>
+<br>
+<li class="nav-item">
+  <a class="nav-link  {{ request()->routeIs('app.auditorias.*') ? 'active' : '' }}" href="{{route('app.auditorias.index')}}">
+    <div class="icon icon-shop icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
+       <i class="fa-solid fa-user"></i>
+    </div>
+    <span class="nav-link-text ms-1">Auditoria</span>
+  </a>
+</li>
 @else
 <li class="nav-item">
   <a class="nav-link  {{ request()->routeIs('app.colaboradores.*') ? 'active' : '' }}" href="{{route('app.colaboradores.edit',['id' => auth()->user()->colaborador_id] )}}">
@@ -78,6 +95,7 @@
   </a>
 </li>
 @endif
+
 
 <br>
 

@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Unidade extends Model
 {
-    use HasFactory, SoftDeletes, Auditable;
+    use HasFactory, Auditable;
 
     protected $fillable = ['nome_fantasia', 'razao_social', 'cnpj', 'bandeira_id'];
 

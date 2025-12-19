@@ -46,13 +46,6 @@
                                 </button>
                             </div>
                     </div>
-
-                    <div class="col-12 col-sm-4">
-                        <!-- Botão para colapsar os filtros e busca -->
-                        <button class="btn btn-link w-100 toggleColapse" data-target="#filterCollapse" type="button">
-                                <i class="fa-solid fa-filter"></i> Filtros Avançados
-                            </button>
-                    </div>
                 </div>
               <!-- Filtros e busca -->
               <div class="collapse" id="filterCollapse">
@@ -195,15 +188,6 @@
                 });
             }
         });
-    });
-
-
-    document.querySelector('form').addEventListener('submit', function(event) {
-        let select = document.getElementById('grupoSelect');
-        if (select.value === "") {
-            alert('Por favor, selecione uma opção válida.');
-            event.preventDefault();
-        }
     });
 </script>
 @endsection
