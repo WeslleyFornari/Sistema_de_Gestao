@@ -1,11 +1,24 @@
 # Pré-requisitos:
-- Docker Desktop
-- WSL 2
+    - Docker Desktop
+    - WSL 2
 
-# Instalação do projeto
-git clone ...
-# Copie a pasta do projeto /Sistema_de_Gestão para o lugar desejado em sua maquina
-# Inicie o Docker Desktop
+INICIE O DOCKER DESKTOP
+
+# Instalação
+    abra o terminal WSL onde vai ficar o projeto
+# Clone o projeto
+    git clone https://github.com/WeslleyFornari/Sistema_de_Gestao.git
+    feche o WSL e abra dentro da pasta criada
+
+# Execute o comando abaixo
+    docker run --rm \
+    -u "$(id -u):$(id -g)" \
+    -v "$(pwd):/var/www/html" \
+    -w /var/www/html \
+    laravelsail/php83-composer:latest \
+    composer install --ignore-platform-reqs
+
+
 
 # Abra o terminal WSL e os comandos:
 ls /home
