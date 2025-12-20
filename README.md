@@ -1,6 +1,6 @@
 ## Pré-requisitos:
     Docker Desktop instalado e rodando.
-    WSL 2 configurado (para usuários Windows).
+    WSL configurado (para usuários Windows).
     PHP 8.3
     Laravel 10
     
