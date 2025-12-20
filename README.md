@@ -1,16 +1,16 @@
 # Pré-requisitos:
-    - Docker Desktop
-    - WSL 2
+   Docker Desktop instalado e rodando.
+   WSL 2 configurado (para usuários Windows).
 
 INICIE O DOCKER DESKTOP
 
-# Instalação
+# Instalação e Configuração
     abra o terminal WSL onde vai ficar o projeto
-# Clone o projeto
+# Clone o repositório
     git clone https://github.com/WeslleyFornari/Sistema_de_Gestao.git
-    feche o WSL e abra dentro da pasta criada
+    cd Sistema_de_Gestao
 
-# Execute o comando abaixo
+# Instale as dependências do Composer via Docker:
     docker run --rm \
     -u "$(id -u):$(id -g)" \
     -v "$(pwd):/var/www/html" \
@@ -18,40 +18,53 @@ INICIE O DOCKER DESKTOP
     laravelsail/php83-composer:latest \
     composer install --ignore-platform-reqs
 
-
-
-# Abra o terminal WSL e os comandos:
-ls /home
-su - {usuario}  Obs: não pode ser root
-
-sudo nano /etc/wsl.conf
-
-# Na raiz do projeto abra o shell linux WSL e execute o comando abaixo para criar o ambiente em Docker
-./vendor/bin/sail up -d --build
+# Inicie os containers do projeto:
+./vendor/bin/sail up -d 
 
 # Carregar as tabelas / migrations criados no banco de dados
+./vendor/bin/sail artisan migrate --seed
 
-# parar o projeto #
-./vendor/bin/sail down 
-# rodar o projeto #
-./vendor/bin/sail up -d
-# Suba o serviços de filas #
-./vendor/bin/sail artisan queue:work
 
-# Crie o banco de dados e as tabelas
-./vendor/bin/sail artisan migrate
+# Node dependencias e Filas
+./vendor/bin/sail npm install
+./vendor/bin/sail artisan queue:work & ./vendor/bin/sail npm run dev
 
-# Crie um usuario Padrão de acesso
-./vendor/bin/sail artisan db:seed
+# Executando o Sistema
+Credenciais de Acesso (Padrão):
 
-# rodar o projeto #
-./vendor/bin/sail up -d
+E-mail: admin@admin
+Senha: password
 
-# Acessar
-//localhost
+# Comandos Úteis do Docker (Sail)
+Parar o projeto: ./vendor/bin/sail down
+Subir o projeto: ./vendor/bin/sail up -d
 
-# Primeiro Acesso
-email: admin@admin  password: password
+
+## 📖 INSTRUÇÕES DE USO
+
+### 1. Gestão de Entidades (CRUD completo)
+O sistema possui módulos para a gestão de **Colaboradores, Grupos Econômicos, Bandeiras e Unidades**. Em todos eles, o fluxo é padronizado:
+* **Cadastros:** Você pode Criar, Visualizar, Editar ou Excluir registros em qualquer um desses módulos através do menu lateral.
+* **Ações de Lista:** Para manter o visual limpo, as opções de **Editar e Excluir** em cada listagem estão agrupadas em um menu **Dropdown** ao final de cada linha.
+
+### Gestão de Colaboradores e Exportação
+* No menu lateral, acesse **Colaboradores**.
+* Na tela de listagem a direita, você encontrará os **filtros avançados** para busca de registros.
+* **Exportação:** Os botões para gerar **PDF** ou **Excel** da listagem filtrada estão localizados nesta página.
+* Você também pode realizar as operações de **Cadastrar, Editar ou Excluir** colaboradores.
+* **Novo Colaborador:** Ao cadastrar um novo colaborador, o sistema define automaticamente a **senha padrão: `password`**. O usuário poderá alterá-la posteriormente no seu primeiro acesso através das configurações de perfil.
+
+### Relatórios e Listagens
+* Acesse o menu **Relatórios** para visualizar a listagem geral consolidada do sistema e realizar o download dos arquivos gerados.
+
+### 3. Sistema de Auditoria (Logs)
+* O sistema registra automaticamente as ações de criação, edição e exclusão.
+* Para visualizar o histórico, acesse o menu **Auditoria**.
+* **Nota Técnica:** Os logs são processados em segundo plano via **Queues**. Certifique-se de manter o comando `./vendor/bin/sail artisan queue:work` ativo para visualizar os registros atualizados.
+
+
+
+
 
 
 
