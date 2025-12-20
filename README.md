@@ -1,11 +1,11 @@
 ## Pré-requisitos:
-   Docker Desktop instalado e rodando.
-   WSL 2 configurado (para usuários Windows).
-
-INICIE O DOCKER DESKTOP
-
+    Docker Desktop instalado e rodando.
+    WSL 2 configurado (para usuários Windows).
+    PHP 8.3
+    Laravel 10
+    
 ## Instalação e Configuração
-    abra o terminal WSL onde vai ficar o projeto
+    abra o terminal Linux / WSL(Windows) onde vai ficar o projeto
 ## Clone o repositório
     git clone https://github.com/WeslleyFornari/Sistema_de_Gestao.git
     cd Sistema_de_Gestao
