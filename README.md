@@ -1,16 +1,16 @@
-# Pré-requisitos:
+## Pré-requisitos:
    Docker Desktop instalado e rodando.
    WSL 2 configurado (para usuários Windows).
 
 INICIE O DOCKER DESKTOP
 
-# Instalação e Configuração
+## Instalação e Configuração
     abra o terminal WSL onde vai ficar o projeto
-# Clone o repositório
+## Clone o repositório
     git clone https://github.com/WeslleyFornari/Sistema_de_Gestao.git
     cd Sistema_de_Gestao
 
-# Instale as dependências do Composer via Docker:
+## Instale as dependências do Composer via Docker:
     docker run --rm \
     -u "$(id -u):$(id -g)" \
     -v "$(pwd):/var/www/html" \
@@ -18,27 +18,25 @@ INICIE O DOCKER DESKTOP
     laravelsail/php83-composer:latest \
     composer install --ignore-platform-reqs
 
-# Inicie os containers do projeto:
-./vendor/bin/sail up -d 
+## Inicie os containers do projeto:
+    ./vendor/bin/sail up -d 
 
 # Carregar as tabelas / migrations criados no banco de dados
-./vendor/bin/sail artisan migrate --seed
+    ./vendor/bin/sail artisan migrate --seed
 
 
 # Node dependencias e Filas
-./vendor/bin/sail npm install
-./vendor/bin/sail artisan queue:work & ./vendor/bin/sail npm run dev
+    ./vendor/bin/sail npm install
+    ./vendor/bin/sail artisan queue:work & ./vendor/bin/sail npm run dev
 
-# Executando o Sistema
-Credenciais de Acesso (Padrão):
+## Executando o Sistema
+    http://localhost
+    login: admin@admin
+    senha: password
 
-E-mail: admin@admin
-Senha: password
-
-# Comandos Úteis do Docker (Sail)
-Parar o projeto: ./vendor/bin/sail down
-Subir o projeto: ./vendor/bin/sail up -d
-
+## Comandos Úteis do Docker (Sail)
+    Parar o projeto: ./vendor/bin/sail down
+    Subir o projeto: ./vendor/bin/sail up -d
 
 ## 📖 INSTRUÇÕES DE USO
 
